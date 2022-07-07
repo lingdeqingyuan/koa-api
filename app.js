@@ -1,7 +1,10 @@
 const Koa = require('koa');
+const InitManager = require('./core/init');
 
 const app = new Koa();
 
-app.use()
+InitManager.initCore(app);
 
-app.listen(3000)
+app.listen(3000, () => {
+  console.log('server started!')
+})
