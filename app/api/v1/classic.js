@@ -1,9 +1,11 @@
 const Router = require('koa-router');
+const HttpException = require('../../../core/http-exception');
 
 const router = new Router();
 
 router.get('/v1/classic/latest', (ctx, next) => {
-  throw new Error('11')
+  const error = new HttpException('错误1', 20000, 400)
+  throw error;
   ctx.body = {
     key: 'classic'
   }
