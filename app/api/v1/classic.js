@@ -1,14 +1,11 @@
 const Router = require('koa-router');
-const HttpException = require('../../../core/http-exception');
+const { PositiveIntegerValidator } = require('../../validators/validator');
 
 const router = new Router();
 
-router.get('/v1/classic/latest', (ctx, next) => {
-  const error = new HttpException('错误1', 20000, 400)
-  throw error;
-  ctx.body = {
-    key: 'classic'
-  }
+router.get('/v1/:id/classic/latest', async (ctx, next) => {
+  const v = await new PositiveIntegerValidator().validate(ctx);
+  // ctx.body = 'fail'
 })
 
 module.exports = router;
