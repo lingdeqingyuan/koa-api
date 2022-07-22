@@ -21,4 +21,7 @@ User.init({
     type: Sequelize.STRING(64),
     unique: true
   }
+}, {
+  sequelize: db,
+  tableName: 'user'
 })

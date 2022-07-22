@@ -4,10 +4,13 @@ const catchError = async (ctx, next) => {
   try {
     await next()
   } catch (error) {
-    if (global.config.env === 'dev') {
+    const isDev = global.config.env === 'dev';
+    const isHttpException = error instanceof HttpException;
+    if (isDev && !isHttpException) {
       throw error;
     }
-    if (error instanceof HttpException) {
+
+    if (isHttpException) {
       ctx.body = {
         error_code : error.errorCode,
         msg: error.msg,
