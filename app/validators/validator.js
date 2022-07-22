@@ -1,4 +1,6 @@
+const { ParameterException } = require("../../core/http-exception");
 const { LinValidator, Rule } = require("../../core/lin-validator");
+const { User } = require("../models/user");
 
 class PositiveIntegerValidator extends LinValidator {
   constructor() {
@@ -30,6 +32,19 @@ class RegisterValidator extends LinValidator {
     const password2 = vals.body.password2;
     if (password1 !== password2) {
       throw new Error('两个密码必须相同！')
+    }
+  }
+
+  async validateEmail (vals) {
+    const email = vals.body.email;
+    const user = await User.findOne({
+      where: {
+        email
+      }
+    });
+
+    if (user) {
+      throw new ParameterException('Email不能重复')
     }
   }
 }
