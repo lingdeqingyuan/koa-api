@@ -1,3 +1,4 @@
+const Bcrypt = require('bcryptjs');
 const { db } = require("../../core/db");
 const { Sequelize, Model } = require('sequelize');
 
@@ -19,7 +20,14 @@ User.init({
     type: Sequelize.STRING(128),
     unique: true
   },
-  password: Sequelize.STRING,
+  password: { 
+    type: Sequelize.STRING,
+    set(val) {
+      const salt = Bcrypt.genSaltSync(10);
+      const psw = Bcrypt.hashSync(val, salt);
+      this.setDataValue('password', psw);
+    } 
+  },
   openid: {
     type: Sequelize.STRING(64),
     unique: true
